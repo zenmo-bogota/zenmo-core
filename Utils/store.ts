@@ -7,20 +7,37 @@ const useStore = create(
     (set, get) => ({
       // State Variables
       wallet: null,
-      worldcoinHash: "",
+      worldcoinHash: '',
       worldcoinModal: false,
+      storeWallet: null,
+      storeAztecAccount: null,
+      storeWeb3auth: null,
+      storeProvider: null,
 
       //State methods
       // setWallet: (userWallet) => {
       //   set({ wallet: userWallet });
       // },
       setWorldcoinHash: (hash) => {
-        set({ worldcoinHash: hash, worldcoinModal: false})
+        set({ worldcoinHash: hash, worldcoinModal: false });
+      },
+
+      //State methods
+      setStoreWallet: (userWallet) => {
+        set({ storeWallet: userWallet });
+      },
+      setStoreAztecAccount: async (account) => {
+        set({ storeAztecAccount: account });
+      },
+      setStoreWeb3auth: (auth) => {
+        set({ storeWeb3auth: auth });
+      },
+      setStoreProvider: (provider) => {
+        set({ storeProvider: provider });
       },
       setWorldcoinModal: (bool) => {
-        set({ worldcoinModal: bool})
-      }
-
+        set({ worldcoinModal: bool });
+      },
 
       //examples
 

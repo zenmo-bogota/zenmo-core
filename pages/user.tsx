@@ -15,16 +15,24 @@ import {
   Input,
   Spinner,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Web3Storage } from 'web3.storage';
+
+import useStore from '../Utils/store';
 
 const User = () => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [creatingGroup, setCreatingGroup] = useState(false);
-  //create Group
 
+  const { wallet, aztecAccount } = useStore((state: any) => state);
+
+  console.log('here is the store', wallet, aztecAccount);
+
+  useEffect(() => {}, [wallet]);
+
+  //create Group
   const createGroup = async (id) => {
     // start loading while we create the group in web3.storage
     setCreatingGroup(true);
