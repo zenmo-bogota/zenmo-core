@@ -25,7 +25,7 @@ const User = () => {
   const [creatingGroup, setCreatingGroup] = useState(false);
   //create Group
 
-  const createGroup = async () => {
+  const createGroup = async (id) => {
     // start loading while we create the group in web3.storage
     setCreatingGroup(true);
 
