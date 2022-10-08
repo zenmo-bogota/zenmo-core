@@ -66,7 +66,7 @@ const User = () => {
                   <Button
                     colorScheme="blue"
                     mr={3}
-                    onClick={() => createGroup()}
+                    onClick={() => createGroup('test123')}
                   >
                     Create
                   </Button>
