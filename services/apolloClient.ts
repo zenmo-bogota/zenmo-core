@@ -8,8 +8,6 @@ import {
 } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import fetch from 'cross-fetch';
-import { LENS_API } from '../config';
-import { getAuthenticationToken } from '../lib/state';
 
 const defaultOptions: DefaultOptions = {
   watchQuery: {
@@ -23,7 +21,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 const httpLink = new HttpLink({
-  uri: LENS_API,
+  uri: 'https://api.lens.dev/',
   fetch,
 });
 
