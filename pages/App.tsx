@@ -8,6 +8,8 @@ import {
 import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
+import { createAztecSdk, EthersAdapter, SdkFlavour } from '@aztec/sdk';
+import { EthAddress, GrumpkinAddress } from '@aztec/barretenberg/address';
 
 const clientId =
   'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
@@ -18,7 +20,106 @@ function App() {
     null
   );
 
-  const setWallet = useStore((store: any) => store.setWallet);
+  const {
+    setStoreWallet,
+    setStoreWeb3Auth,
+    setStoreProvider,
+    storeAztecAccount,
+  } = useStore((store: any) => store);
+
+  const setupAztec = async () => {
+    console.log('setupAztec running');
+    if (!window.ethereum) {
+      alert('no window.ethereum?');
+      return;
+    }
+
+    let networkData = [
+      {
+        chainId: '0xa57ec',
+
+        chainName: 'Aztec Testnet',
+
+        rpcUrls: ['https://aztec-connect-testnet-eth-host.aztec.network:8545'],
+
+        nativeCurrency: {
+          name: 'Ether',
+
+          symbol: 'ETH',
+
+          decimals: 18,
+        },
+      },
+    ];
+    try {
+      if (
+        web3auth?.provider &&
+        setStoreProvider &&
+        storeAztecAccount === null
+      ) {
+        // setStoreProvider(web3auth.provider);
+        // setStoreWallet(provider);
+
+        // const signer = provider.getSigner();
+        // const userAddress = await signer.getAddress();
+
+        // console.log('here is the address', userAddress);
+        // const ethereumProvider = new EthersAdapter(provider);
+        if (
+          window.ethereum.chainId !== '0xa57ec' ||
+          window.ethereum.chainId !== '0x677868'
+        ) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+
+            params: networkData,
+          });
+        }
+
+        console.log('---- begin SDK ----');
+
+        const sdk = await createAztecSdk(provider, {
+          serverUrl: 'https://api.aztec.network/aztec-connect-testnet/falafel', // testnet
+          pollInterval: 1000,
+          memoryDb: true, // set to false to save chain data
+          debug: 'bb:*', // print debug logs
+          flavour: SdkFlavour.PLAIN, // Use PLAIN with Nodejs
+          minConfirmation: 1, // ETH block confirmations
+        });
+
+        console.log('here is the sdk', sdk);
+
+        const userAddress = await getAccounts();
+
+        console.log('here is the userAddress', userAddress);
+
+        const { publicKey, privateKey } = await sdk.generateAccountKeyPair(
+          userAddress as EthAddress
+        );
+
+        const aztecAccount = {
+          publicKey,
+          privateKey,
+          sdk,
+        };
+
+        const account = await sdk.addUser(privateKey);
+
+        await storeAztecAccount(account);
+
+        await account.awaitSynchronised();
+
+        console.log('here is the aztecAccount', aztecAccount);
+
+        console.log('web3auth.provider', web3auth?.provider);
+        console.log('provider', provider);
+        console.log(' setStoreProvider ', setStoreProvider);
+        console.log(' storeAztecAccount', storeAztecAccount);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     const init = async () => {
@@ -48,6 +149,7 @@ function App() {
         });
         if (web3auth.provider) {
           setProvider(web3auth.provider);
+          setStoreProvider(web3auth.provider);
         }
       } catch (error) {
         console.error(error);
@@ -57,13 +159,17 @@ function App() {
     init();
   }, []);
 
+  useEffect(() => {
+    // setupAztec();
+    // setStoreWeb3Auth(web3auth);
+  }, [provider, setStoreProvider]);
+
   const login = async () => {
     if (!web3auth) {
       console.log('web3auth not initialized yet');
       return;
     }
     const web3authProvider = await web3auth.connect();
-    setWallet(web3authProvider);
     setProvider(web3authProvider);
   };
 
@@ -102,6 +208,7 @@ function App() {
     const rpc = new RPC(provider);
     const address = await rpc.getAccounts();
     console.log(address);
+    return address;
   };
 
   const getBalance = async () => {
@@ -168,6 +275,9 @@ function App() {
       </button>
       <button onClick={logout} className="card">
         Log Out
+      </button>
+      <button onClick={() => setupAztec()} className="card">
+        setupAztec
       </button>
 
       <div id="console" style={{ whiteSpace: 'pre-line' }}>
