@@ -1,62 +1,75 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/web3auth";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import RPC from "../components/web3RPC"; // for using web3.js
+import { useEffect, useState } from 'react';
+import { Web3Auth } from '@web3auth/web3auth';
+import {
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+  WALLET_ADAPTERS,
+} from '@web3auth/base';
+import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
+import useStore from '../Utils/store';
 
-const clientId = "BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag"; // get from https://dashboard.web3auth.io
+const clientId =
+  'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
+
+  const setWallet = useStore((store: any) => store.setWallet);
 
   useEffect(() => {
     const init = async () => {
       try {
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-        },
-      });
+        const web3auth = new Web3Auth({
+          clientId,
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: '0x1',
+            rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+        });
 
-      setWeb3auth(web3auth);
+        setWeb3auth(web3auth);
 
-      await web3auth.initModal({ modalConfig: {
-        [WALLET_ADAPTERS.COINBASE]: {
-          label: "Coinbase",
-          showOnModal: true
-        },
-        "openlogin": {
-          label: "null",
-          showOnModal: false
+        await web3auth.initModal({
+          modalConfig: {
+            [WALLET_ADAPTERS.COINBASE]: {
+              label: 'Coinbase',
+              showOnModal: true,
+            },
+            openlogin: {
+              label: 'null',
+              showOnModal: false,
+            },
+          },
+        });
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
         }
-      }});
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
+      } catch (error) {
+        console.error(error);
       }
-        } catch (error) {
-          console.error(error);
-        }
-      };
+    };
 
-      init();
+    init();
   }, []);
 
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      console.log('web3auth not initialized yet');
       return;
     }
     const web3authProvider = await web3auth.connect();
+    setWallet(web3authProvider);
     setProvider(web3authProvider);
   };
 
   const getUserInfo = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      console.log('web3auth not initialized yet');
       return;
     }
     const user = await web3auth.getUserInfo();
@@ -65,7 +78,7 @@ function App() {
 
   const logout = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      console.log('web3auth not initialized yet');
       return;
     }
     await web3auth.logout();
@@ -74,7 +87,7 @@ function App() {
 
   const getChainId = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      console.log('provider not initialized yet');
       return;
     }
     const rpc = new RPC(provider);
@@ -83,7 +96,7 @@ function App() {
   };
   const getAccounts = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      console.log('provider not initialized yet');
       return;
     }
     const rpc = new RPC(provider);
@@ -93,7 +106,7 @@ function App() {
 
   const getBalance = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      console.log('provider not initialized yet');
       return;
     }
     const rpc = new RPC(provider);
@@ -103,7 +116,7 @@ function App() {
 
   const sendTransaction = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      console.log('provider not initialized yet');
       return;
     }
     const rpc = new RPC(provider);
@@ -113,7 +126,7 @@ function App() {
 
   const signMessage = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      console.log('provider not initialized yet');
       return;
     }
     const rpc = new RPC(provider);
@@ -123,7 +136,7 @@ function App() {
 
   const getPrivateKey = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      console.log('provider not initialized yet');
       return;
     }
     const rpc = new RPC(provider);
@@ -157,8 +170,8 @@ function App() {
         Log Out
       </button>
 
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+      <div id="console" style={{ whiteSpace: 'pre-line' }}>
+        <p style={{ whiteSpace: 'pre-line' }}></p>
       </div>
     </>
   );
@@ -181,7 +194,11 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>
