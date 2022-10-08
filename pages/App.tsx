@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/web3auth";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import RPC from "./web3RPC"; // for using web3.js
+import RPC from "../components/web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
 const clientId = "BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag"; // get from https://dashboard.web3auth.io
