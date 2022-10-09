@@ -10,7 +10,8 @@
     "copy:sdk-resources": "cp ./node_modules/@aztec/barretenberg/wasm/barretenberg.wasm ./public/ && cp ./node_modules/@aztec/barretenberg/worker.js ./public/"
   },
   "dependencies": {
-    "@aztec": "^2.1.45",
+    "@aztec/sdk": "^2.1.45",
+    "@aztec/barretenberg": "^2.1.45",
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
