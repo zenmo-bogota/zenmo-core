@@ -16,7 +16,7 @@ import {
   SkeletonText,
   Center,
 } from '@chakra-ui/react';
-import Davatar from '@davatar/react';
+//import Davatar from '@davatar/react';
 import { rand } from 'elliptic';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
@@ -102,14 +102,14 @@ const Home = () => {
     <>
       {storeProvider ? (
         <Center>
-          <Davatar
+          {/* <Davatar
             size={49}
             address={
               storeWallet || '0xb6dB965d0041A48C21585F651FE3953F71a37040'
             }
             provider={storeProvider} // optional
             generatedAvatarType="jazzicon" // optional, 'jazzicon' or 'blockies'
-          />
+          /> */}
         </Center>
       ) : null}
 

@@ -298,7 +298,6 @@ function App() {
   };
   const loggedInView = (
     <>
-      {Router.push('/home')}
       <Worldcoin />
     </>
   );
