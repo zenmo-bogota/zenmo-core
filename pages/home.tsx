@@ -225,6 +225,7 @@ const Home = () => {
     const address = await rpc.getAccounts();
     setStoreWallet(address);
 
+    //@ts-ignore
     const ethersprovider = new ethers.providers.Web3Provider(window.ethereum);
 
     const ens = await ethersprovider.lookupAddress(address);
