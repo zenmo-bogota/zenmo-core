@@ -9,8 +9,8 @@ import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
 import { generateName } from '../Utils/name.js';
-import { createAztecSdk, EthersAdapter, SdkFlavour } from '@aztec/sdk';
-import { EthAddress, GrumpkinAddress } from '@aztec/barretenberg/address';
+// import { createAztecSdk, EthersAdapter, SdkFlavour } from '@aztec/sdk';
+// import { EthAddress, GrumpkinAddress } from '@aztec/barretenberg/address';
 import { useRouter } from 'next/router';
 
 import {
@@ -51,118 +51,118 @@ function App() {
   );
   const storeAztecAccount = useStore((store: any) => store.storeAztecAccount);
 
-  const setupAztec = async () => {
-    console.log('setupAztec running');
-    //@ts-ignore
-    if (!window.ethereum) {
-      alert('no window.ethereum?');
-      return;
-    }
+  // const setupAztec = async () => {
+  //   console.log('setupAztec running');
+  //   //@ts-ignore
+  //   if (!window.ethereum) {
+  //     alert('no window.ethereum?');
+  //     return;
+  //   }
 
-    let networkData = [
-      {
-        chainId: '0xa57ec',
+  //   let networkData = [
+  //     {
+  //       chainId: '0xa57ec',
 
-        chainName: 'Aztec Testnet',
+  //       chainName: 'Aztec Testnet',
 
-        rpcUrls: ['https://aztec-connect-testnet-eth-host.aztec.network:8545'],
+  //       rpcUrls: ['https://aztec-connect-testnet-eth-host.aztec.network:8545'],
 
-        nativeCurrency: {
-          name: 'Ether',
+  //       nativeCurrency: {
+  //         name: 'Ether',
 
-          symbol: 'ETH',
+  //         symbol: 'ETH',
 
-          decimals: 18,
-        },
-      },
-    ];
-    try {
-      if (
-        web3auth?.provider &&
-        setStoreProvider &&
-        storeAztecAccount === null
-      ) {
-        if (
-          //@ts-ignore
-          window.ethereum.chainId !== '0xa57ec' ||
-          //@ts-ignore
-          window.ethereum.chainId !== '0x677868'
-        ) {
-          //@ts-ignore
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
+  //         decimals: 18,
+  //       },
+  //     },
+  //   ];
+  //   try {
+  //     if (
+  //       web3auth?.provider &&
+  //       setStoreProvider &&
+  //       storeAztecAccount === null
+  //     ) {
+  //       if (
+  //         //@ts-ignore
+  //         window.ethereum.chainId !== '0xa57ec' ||
+  //         //@ts-ignore
+  //         window.ethereum.chainId !== '0x677868'
+  //       ) {
+  //         //@ts-ignore
+  //         await window.ethereum.request({
+  //           method: 'wallet_addEthereumChain',
 
-            params: networkData,
-          });
-        }
+  //           params: networkData,
+  //         });
+  //       }
 
-        console.log('---- begin SDK ----');
+  //       console.log('---- begin SDK ----');
 
-        const sdk = await createAztecSdk(provider, {
-          serverUrl: 'https://api.aztec.network/aztec-connect-testnet/falafel', // testnet
-          pollInterval: 1000,
-          memoryDb: true, // set to false to save chain data
-          debug: 'bb:*', // print debug logs
-          flavour: SdkFlavour.PLAIN, // Use PLAIN with Nodejs
-          minConfirmation: 1, // ETH block confirmations
-        });
+  //       const sdk = await createAztecSdk(provider, {
+  //         serverUrl: 'https://api.aztec.network/aztec-connect-testnet/falafel', // testnet
+  //         pollInterval: 1000,
+  //         memoryDb: true, // set to false to save chain data
+  //         debug: 'bb:*', // print debug logs
+  //         flavour: SdkFlavour.PLAIN, // Use PLAIN with Nodejs
+  //         minConfirmation: 1, // ETH block confirmations
+  //       });
 
-        console.log('here is the sdk', sdk);
+  //       console.log('here is the sdk', sdk);
 
-        const userAddress = await getAccounts();
-        setStoreWallet(userAddress);
-        provider;
+  //       const userAddress = await getAccounts();
+  //       setStoreWallet(userAddress);
+  //       provider;
 
-        console.log('here is the userAddress', userAddress);
+  //       console.log('here is the userAddress', userAddress);
 
-        const { publicKey, privateKey } = await sdk.generateAccountKeyPair(
-          userAddress as EthAddress
-        );
+  //       const { publicKey, privateKey } = await sdk.generateAccountKeyPair(
+  //         userAddress as EthAddress
+  //       );
 
-        const aztecAccount = {
-          publicKey,
-          privateKey,
-          sdk,
-        };
+  //       const aztecAccount = {
+  //         publicKey,
+  //         privateKey,
+  //         sdk,
+  //       };
 
-        console.log('here is the aztecAccount', aztecAccount);
+  //       console.log('here is the aztecAccount', aztecAccount);
 
-        let account = await sdk.getUser(publicKey);
-        let randoName = false;
+  //       let account = await sdk.getUser(publicKey);
+  //       let randoName = false;
 
-        if (account.id === null) {
-          const randoName = generateName();
-          account = await sdk.addUser(privateKey);
-          // sdk.createRegisterController(
-          //   account.id,
-          //   randoName,
-          //   privateKey,
-          //   account.id,
-          //   userAddress,
-          //   0,
-          //   0,
-          //   userAddress,
-          //   provider
-          // );
-        }
+  //       if (account.id === null) {
+  //         const randoName = generateName();
+  //         account = await sdk.addUser(privateKey);
+  //         // sdk.createRegisterController(
+  //         //   account.id,
+  //         //   randoName,
+  //         //   privateKey,
+  //         //   account.id,
+  //         //   userAddress,
+  //         //   0,
+  //         //   0,
+  //         //   userAddress,
+  //         //   provider
+  //         // );
+  //       }
 
-        console.log('Aztec account', account);
+  //       console.log('Aztec account', account);
 
-        await setStoreAztecAccount({ GrumpkinAddress: account.id });
+  //       await setStoreAztecAccount({ GrumpkinAddress: account.id });
 
-        // set random name for a new user
-        if (randoName) {
-          await setStoreRandoName({ randoName: randoName });
-        }
+  //       // set random name for a new user
+  //       if (randoName) {
+  //         await setStoreRandoName({ randoName: randoName });
+  //       }
 
-        await account.awaitSynchronised();
-        console.log(' setStoreProvider ', setStoreProvider);
-        console.log(' storeAztecAccount', setStoreAztecAccount);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //       await account.awaitSynchronised();
+  //       console.log(' setStoreProvider ', setStoreProvider);
+  //       console.log(' storeAztecAccount', setStoreAztecAccount);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     const init = async () => {
@@ -206,7 +206,7 @@ function App() {
     if (storeAztecAccount?.GrumpkinAddress) {
       //@ts-ignore
       setStoreWallet(provider?.selectedAddress);
-      router.push(`/home/`);
+      Router.push(`/home/`);
     }
   }, [storeAztecAccount]);
 
