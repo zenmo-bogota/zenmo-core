@@ -13,8 +13,8 @@ import {
   StackDivider,
   VStack,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
 import CreateGroup from '../../components/CreateGroup';
+import Layout from '../../components/Layout';
 
 //header
 
@@ -63,40 +63,42 @@ const mapped = users.map((user) => (
 const Groups = ({ groupData }) => {
   // fetch groups
   return (
-    <Container>
-      <Grid>
-        {/* header components */}
-        <GridItem>
-          <Flex
-            minWidth="max-content"
-            alignItems="center"
-            gap="2"
-            marginBottom={50}
-          >
-            <Box p="2">
-              <Heading size="md">Circles</Heading>
-            </Box>
-            <Spacer />
-            <Input placeholder="Search" />
-            <Box p="2">
-              <CreateGroup />
-            </Box>
-          </Flex>
-        </GridItem>
-        <GridItem>
-          {/* mapped data */}
+    <Layout>
+      <Container>
+        <Grid>
+          {/* header components */}
           <GridItem>
-            <VStack
-              divider={<StackDivider borderColor="gray.200" />}
-              spacing={4}
-              align="stretch"
+            <Flex
+              minWidth="max-content"
+              alignItems="center"
+              gap="2"
+              marginBottom={50}
             >
-              {mapped}
-            </VStack>
+              <Box p="2">
+                <Heading size="md">Circles</Heading>
+              </Box>
+              <Spacer />
+              <Input placeholder="Search" />
+              <Box p="2">
+                <CreateGroup />
+              </Box>
+            </Flex>
           </GridItem>
-        </GridItem>
-      </Grid>
-    </Container>
+          <GridItem>
+            {/* mapped data */}
+            <GridItem>
+              <VStack
+                divider={<StackDivider borderColor="gray.200" />}
+                spacing={4}
+                align="stretch"
+              >
+                {mapped}
+              </VStack>
+            </GridItem>
+          </GridItem>
+        </Grid>
+      </Container>
+    </Layout>
   );
 };
 

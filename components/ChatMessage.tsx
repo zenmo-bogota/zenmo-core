@@ -1,11 +1,12 @@
 /* eslint-disable react/no-children-prop */
 import { Flex, Input, Button, Text } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
 
 const Message = ({ inputMessage, setInputMessage, handleSendMessage }) => {
   return (
     <Flex w="100%" mt="5">
-      <Text fontSize="30px">🤑</Text>
+      <a href="/pay">
+        <Text fontSize="30px">🤑</Text>
+      </a>
       <Input
         placeholder="Type Something..."
         border="none"

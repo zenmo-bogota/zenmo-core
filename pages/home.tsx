@@ -12,6 +12,7 @@ import {
   StackDivider,
   Text,
 } from '@chakra-ui/react';
+import Layout from '../components/Layout';
 
 //mock data
 const user = [
@@ -72,58 +73,56 @@ const txnmapped = txns.map((txns) => (
 
 const home = () => {
   return (
-    <Container>
-      <Grid>
-        {/* header components */}
-        <GridItem>
-          <Flex minWidth="max-content" gap="2" marginBottom={50}>
-            <Box p="2">
-              <Heading size="md">Welcome</Heading>
-            </Box>
-          </Flex>
-        </GridItem>
-      </Grid>
+    <Layout>
+      <Container>
+        <Grid>
+          {/* header components */}
+          <GridItem>
+            <Flex minWidth="max-content" gap="2" marginBottom={50}></Flex>
+          </GridItem>
+        </Grid>
 
-      <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-        <Box p="6">
-          <Box display="flex" alignItems="baseline">
+        <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+          <Box p="6">
+            <Box display="flex" alignItems="center">
+              <Box
+                fontWeight="semibold"
+                letterSpacing="wide"
+                fontSize="lg"
+                textTransform="uppercase"
+                ml="2"
+              ></Box>
+            </Box>
             <Box
+              mt="1"
               fontWeight="semibold"
-              letterSpacing="wide"
-              fontSize="lg"
-              textTransform="uppercase"
-              ml="2"
+              as="h4"
+              lineHeight="tight"
+              noOfLines={1}
             ></Box>
-          </Box>
-          <Box
-            mt="1"
-            fontWeight="semibold"
-            as="h4"
-            lineHeight="tight"
-            noOfLines={1}
-          ></Box>
-          <Box>
-            <Box as="span" fontSize="lg">
-              {mapped}
+            <Box>
+              <Box as="span" fontSize="lg">
+                {mapped}
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
-      <Box>
-        <Heading p="2" color="#285E61">
-          Transactions
-        </Heading>
-      </Box>
-      <GridItem>
-        <VStack
-          divider={<StackDivider borderColor="gray.200" />}
-          spacing={4}
-          align="stretch"
-        >
-          {txnmapped}
-        </VStack>
-      </GridItem>
-    </Container>
+        <Box>
+          <Heading p="2" color="#285E61">
+            Transactions
+          </Heading>
+        </Box>
+        <GridItem>
+          <VStack
+            divider={<StackDivider borderColor="gray.200" />}
+            spacing={4}
+            align="stretch"
+          >
+            {txnmapped}
+          </VStack>
+        </GridItem>
+      </Container>
+    </Layout>
   );
 };
 

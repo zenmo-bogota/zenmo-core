@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 
 import Chat from '../../components/ChatBox';
-import Header from '../../components/ChatHeader';
+import Layout from '../../components/Layout';
 
 // const Group = ({ groupData }) => {
 //   // fetch group info by id
@@ -27,16 +27,15 @@ import Header from '../../components/ChatHeader';
 
 const chatApp = () => {
   return (
-    <Container>
-      <Grid>
-        <GridItem>
-          <Header />
-        </GridItem>
-        <GridItem>
-          <Chat />
-        </GridItem>
-      </Grid>
-    </Container>
+    <Layout>
+      <Container>
+        <Grid>
+          <GridItem>
+            <Chat />
+          </GridItem>
+        </Grid>
+      </Container>
+    </Layout>
   );
 };
 
