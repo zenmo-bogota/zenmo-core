@@ -48,6 +48,7 @@ function App() {
 
   const setupAztec = async () => {
     console.log('setupAztec running');
+    //@ts-ignore
     if (!window.ethereum) {
       alert('no window.ethereum?');
       return;
@@ -85,9 +86,12 @@ function App() {
         // console.log('here is the address', userAddress);
         // const ethereumProvider = new EthersAdapter(provider);
         if (
+          //@ts-ignore
           window.ethereum.chainId !== '0xa57ec' ||
+          //@ts-ignore
           window.ethereum.chainId !== '0x677868'
         ) {
+          //@ts-ignore
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
 
