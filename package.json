@@ -14,6 +14,7 @@
     "@aztec/sdk": "^2.1.45",
     "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.3.5",
+    "@davatar/react": "^1.11.1",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@pushprotocol/restapi": "^0.1.1",

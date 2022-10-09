@@ -10,7 +10,7 @@ const userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoibGluZ2Vy
 chatClient.connectUser(
   {
     id: 'lingering-dawn-0',
-    name: 'lingering-dawn-0',
+    name: 'dope.eth',
     image: 'https://getstream.io/random_png/?id=lingering-dawn-0&name=lingering-dawn-0',
   },
   userToken,
@@ -18,8 +18,8 @@ chatClient.connectUser(
 
 const channel = chatClient.channel('messaging', 'custom_channel_id', {
   // add as many custom fields as you'd like
-  image: 'https://www.drupal.org/files/project-images/react.png',
-  name: 'Talk about React',
+  image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.aqua-adventures.com%2Flesson%2Ftandem-kayak-rental%2F&psig=AOvVaw3vEkGBKiHNuR2WOvWDpNI_&ust=1665404094291000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNjE2O6P0_oCFQAAAAAdAAAAABAE',
+  name: 'Broke Ape Kayak Club',
   members: ['lingering-dawn-0'],
 });
 
