@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Web3Auth } from '@web3auth/web3auth';
 import {
   CHAIN_NAMESPACES,
@@ -9,7 +8,23 @@ import {
 import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
+
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  Image,
+  Link,
+  VStack,
+} from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+
 import Worldcoin from '../components/Worldcoin';
+
+<Link>Chakra UI</Link>;
 
 const clientId =
   'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
@@ -179,26 +194,41 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
+    <Button
+      style={{
+        colorScheme: 'white',
+        width: '150px',
+        height: '70px',
+        color: 'black',
+        border: 'black',
+      }}
+      onClick={login}
+    >
       Login
-    </button>
+    </Button>
   );
+  // <div className="grid">{provider ? loggedInView : unloggedInView}</div>;
 
   return (
+  
+    <div className="container" style={{ background: '#0BAB9E', width: '100% ' }}>
+      <img
+        src="/Zenmo brand M.svg"
+        alt=""
+        style={{
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '50%',
+        }}
+      >
+      </img>
     <div className="container">
-      <h1 className="title">
-        <Link target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth
-        </Link>
-        & ReactJS Example
-      </h1>
-      <Worldcoin />
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
-      <footer className="footer">
+      <footer className="footer" style={{ color: 'blue' }}>
         <a
-          href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app"
+          href="https://github.com/zenmo-bogota/zenmo-core"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -206,7 +236,41 @@ function App() {
         </a>
       </footer>
     </div>
+    </div>
   );
+
+  //   <Container
+  //     background="#0BAB9E"
+  //     style={{
+  //       paddingLeft: '0',
+  //       paddingRight: '0',
+  //     }}
+  //   >
+  //     <Flex>
+  //       <VStack>
+  //         <Image src="/Zenmo brand.svg" alt="" />
+  //         <Box style={{ margin: 0, width: '100vw !important' }}>
+  //           {provider ? loggedInView : unloggedInView}
+  //         </Box>
+  //         <Button
+  //           style={{
+  //             colorScheme: 'white',
+  //             width: '150px',
+  //             height: '70px',
+  //             color: 'black',
+  //             border: 'black',
+  //           }}
+  //           onClick={login}
+  //         >
+  //           Login
+  //         </Button>
+  //         <Link href="https://github.com/zenmo-bogota/zenmo-core" isExternal>
+  //           Source Code <ExternalLinkIcon mx="2px" />
+  //         </Link>
+  //       </VStack>
+  //     </Flex>
+  //   </Container>
+  // );
 }
 
 export default App;

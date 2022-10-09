@@ -1,3 +1,4 @@
+import { AddIcon, BellIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   AvatarBadge,
@@ -13,20 +14,22 @@ import {
 const Layout = ({ children }) => {
   return (
     <>
-      <Box
-        bg="#0BAB9E"
-        w="100%"
-        p={4}
-        color="white"
-        fontFamily="Mulish"
-        fontWeight="bold"
-        fontSize="40"
-        textTransform="lowercase"
-        ml="2"
-        textAlign="center"
-      >
-        zenmo
-      </Box>
+      <Flex>
+        <Grid
+          bg="#0BAB9E"
+          w="100%"
+          p={4}
+          color="white"
+          fontFamily="Mulish"
+          fontWeight="bold"
+          fontSize="40"
+          textTransform="lowercase"
+          ml="2"
+          textAlign="center"
+        >
+          <GridItem>zenmo</GridItem>
+        </Grid>
+      </Flex>
       {children}
       <Container>
         <Box bg="white" w="100%" p={4}>
