@@ -35,7 +35,7 @@ const clientId =
   'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
 
 function App() {
-  const router = useRouter();
+  const Router = useRouter();
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
@@ -111,6 +111,7 @@ function App() {
 
         const userAddress = await getAccounts();
         setStoreWallet(userAddress);
+        provider;
 
         console.log('here is the userAddress', userAddress);
 
@@ -297,6 +298,7 @@ function App() {
   };
   const loggedInView = (
     <>
+      {Router.push('/home')}
       <Worldcoin />
     </>
   );

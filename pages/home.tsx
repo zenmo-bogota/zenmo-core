@@ -24,6 +24,7 @@ import useStore from '../Utils/store';
 import * as Name from 'w3name';
 import { Web3Storage } from 'web3.storage';
 import { create } from 'ipfs-core';
+import RPC from '../components/web3RPC'; // for using web3.js
 
 //mock data
 const user = [
@@ -78,20 +79,35 @@ const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [creatingGroup, setCreatingGroup] = useState(false);
   const [isloading, setIsLoading] = useState(true);
+  const [balance, setBalance] = useState(null);
 
   const storeAztecAccount = useStore((state: any) => state.storeAztecAccount);
   const storeWallet = useStore((state: any) => state.storeWallet);
+  const setStoreWallet = useStore((state: any) => state.setStoreWallet);
   const storeRandoName = useStore((state: any) => state.storeRandoName);
   const setStoreRandoName = useStore((state: any) => state.setStoreRandoName);
   const storageClient = useStore((state: any) => state.storageClient);
+  const storeProvider = useStore((state: any) => state.storeProvider);
+  const initProvider = useStore((state: any) => state.initProvider);
+  const incognito = useStore((state: any) => state.incognito);
+  const setENS = useStore((state: any) => state.setENS);
+  const ensName = useStore((state: any) => state.setENS);
 
   //Data mapping function
   const Profile = user.map((user) => (
     <>
       <Box key={user.username}>
-        {typeof storeRandoName === 'string' ? storeRandoName : user.username}
+        {incognito ? (
+          <>
+            {typeof storeRandoName === 'string'
+              ? storeRandoName
+              : user.username}
+          </>
+        ) : (
+          ensName || storeWallet
+        )}
       </Box>
-      <Box key={user.balance}>{user.balance}</Box>
+      <Box key={user.balance}>{balance ? balance : 'not available'} ETH</Box>
     </>
   ));
 
@@ -170,6 +186,37 @@ const Home = () => {
     }
   };
 
+  const getBalance = async () => {
+    if (!storeProvider) {
+      console.log('storeProvider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(storeProvider);
+    const balance = await rpc.getBalance();
+    setBalance(balance);
+    console.log('HERE IS THE BALANCE', balance);
+  };
+
+  const getAccounts = async () => {
+    if (!storeProvider) {
+      console.log('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(storeProvider);
+    const address = await rpc.getAccounts();
+    setStoreWallet(address);
+
+    const ens = await storeProvider.lookupAddress(address);
+
+    if (ens) {
+      setENS(ens);
+    }
+
+    console.log(address);
+
+    return address;
+  };
+
   useEffect(() => {
     if (storeRandoName) {
       console.log('now we have a name', storeRandoName);
@@ -188,6 +235,14 @@ const Home = () => {
 
     //get user
   }, [storeRandoName]);
+
+  useEffect(() => {
+    console.log('here is the storeProvider', storeProvider);
+    if (!storeProvider) {
+      initProvider();
+    }
+    getBalance();
+  }, [storeProvider]);
 
   return isloading ? (
     <Box padding="6" boxShadow="lg" bg="white">
