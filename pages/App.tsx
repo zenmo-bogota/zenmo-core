@@ -211,10 +211,7 @@ function App() {
 
   return (
   
-    <div
-      className="container"
-      style={{ background: '#0BAB9E', width: '100% ' }}
-    >
+    <div className="container" style={{ background: '#0BAB9E', width: '100% ' }}>
       <img
         src="/Zenmo brand M.svg"
         alt=""
@@ -223,15 +220,9 @@ function App() {
           marginRight: 'auto',
           width: '50%',
         }}
-      ></img>
+      >
+      </img>
     <div className="container">
-      <h1 className="title">
-        <Link target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth
-        </Link>
-        & ReactJS Example
-      </h1>
-      <Worldcoin />
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
@@ -244,6 +235,7 @@ function App() {
           Source code
         </a>
       </footer>
+    </div>
     </div>
   );
 
