@@ -9,6 +9,7 @@ import {
 import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
+import Worldcoin from '../components/Worldcoin';
 
 const clientId =
   'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
@@ -191,6 +192,7 @@ function App() {
         </Link>
         & ReactJS Example
       </h1>
+      <Worldcoin />
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
