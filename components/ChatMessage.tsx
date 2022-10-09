@@ -1,12 +1,13 @@
 /* eslint-disable react/no-children-prop */
 import { Flex, Input, Button, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 
 const Message = ({ inputMessage, setInputMessage, handleSendMessage }) => {
   return (
     <Flex w="100%" mt="5">
-      <a href="/pay">
+      <Link href="/pay">
         <Text fontSize="30px">🤑</Text>
-      </a>
+      </Link>
       <Input
         placeholder="Type Something..."
         border="none"
