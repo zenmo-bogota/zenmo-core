@@ -15,8 +15,11 @@ import {
   SkeletonCircle,
   SkeletonText,
   Center,
+  FormControl,
+  Switch,
+  FormLabel,
 } from '@chakra-ui/react';
-import Davatar from '@davatar/react';
+// import Davatar from '@davatar/react';
 import { rand } from 'elliptic';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
@@ -28,7 +31,6 @@ import { Web3Storage } from 'web3.storage';
 import { create } from 'ipfs-core';
 import RPC from '../components/web3RPC'; // for using web3.js
 import { ethers } from 'ethers';
-import { FormControl, Switch, FormLabel } from '@chakra-ui/react';
 
 //mock data
 const user = [
@@ -102,14 +104,14 @@ const Home = () => {
     <>
       {storeProvider ? (
         <Center>
-          <Davatar
+          {/* <Davatar
             size={49}
             address={
               storeWallet || '0xb6dB965d0041A48C21585F651FE3953F71a37040'
             }
             provider={storeProvider} // optional
             generatedAvatarType="jazzicon" // optional, 'jazzicon' or 'blockies'
-          />
+          /> */}
         </Center>
       ) : null}
 
@@ -223,6 +225,7 @@ const Home = () => {
     const address = await rpc.getAccounts();
     setStoreWallet(address);
 
+    //@ts-ignore
     const ethersprovider = new ethers.providers.Web3Provider(window.ethereum);
 
     const ens = await ethersprovider.lookupAddress(address);
