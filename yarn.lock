@@ -40,6 +40,9 @@
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.9.4.tgz#a483c54c1253656bb33babd464e3154a173e1577"
   integrity sha512-HazVq9zwTVwGmqdwYzu7WyQ6FQVZ7SwET0KKQuKm55jD0IfUpZgN0OPIiZG3zV1iSrVYcN0bdwLRXI/VNCYsUA==
 
+"@aztec/bridge-clients@0.1.63":
+  version "0.1.63"
+
 "@aztec/barretenberg@^2.1.45":
   version "2.1.45"
   resolved "https://registry.yarnpkg.com/@aztec/barretenberg/-/barretenberg-2.1.45.tgz#43fc9acd3612f9aab39945efb5af25d7f52a4103"
