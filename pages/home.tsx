@@ -14,7 +14,9 @@ import {
   useDisclosure,
   SkeletonCircle,
   SkeletonText,
+  Center,
 } from '@chakra-ui/react';
+import Davatar from '@davatar/react';
 import { rand } from 'elliptic';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
@@ -25,6 +27,8 @@ import * as Name from 'w3name';
 import { Web3Storage } from 'web3.storage';
 import { create } from 'ipfs-core';
 import RPC from '../components/web3RPC'; // for using web3.js
+import { ethers } from 'ethers';
+import { FormControl, Switch, FormLabel } from '@chakra-ui/react';
 
 //mock data
 const user = [
@@ -96,6 +100,19 @@ const Home = () => {
   //Data mapping function
   const Profile = user.map((user) => (
     <>
+      {storeProvider ? (
+        <Center>
+          <Davatar
+            size={49}
+            address={
+              storeWallet || '0xb6dB965d0041A48C21585F651FE3953F71a37040'
+            }
+            provider={storeProvider} // optional
+            generatedAvatarType="jazzicon" // optional, 'jazzicon' or 'blockies'
+          />
+        </Center>
+      ) : null}
+
       <Box key={user.username}>
         {incognito ? (
           <>
@@ -206,10 +223,14 @@ const Home = () => {
     const address = await rpc.getAccounts();
     setStoreWallet(address);
 
-    const ens = await storeProvider.lookupAddress(address);
+    const ethersprovider = new ethers.providers.Web3Provider(window.ethereum);
+
+    const ens = await ethersprovider.lookupAddress(address);
 
     if (ens) {
       setENS(ens);
+    } else {
+      console.log('no ens name found');
     }
 
     console.log(address);
@@ -242,13 +263,18 @@ const Home = () => {
       initProvider();
     }
     getBalance();
+    getAccounts();
   }, [storeProvider]);
 
   return isloading ? (
-    <Box padding="6" boxShadow="lg" bg="white">
-      <SkeletonCircle size="10" />
-      <SkeletonText mt="4" noOfLines={4} spacing="4" />
-    </Box>
+    <Layout>
+      <Container>
+        <Box padding="6" boxShadow="lg" bg="white">
+          <SkeletonCircle size="10" />
+          <SkeletonText mt="4" noOfLines={4} spacing="4" />
+        </Box>
+      </Container>
+    </Layout>
   ) : (
     <Layout>
       <Container>
@@ -285,6 +311,14 @@ const Home = () => {
           </Box>
         </Box>
         <Box>
+          <Box m="5">
+            <FormControl display="flex" alignItems="center">
+              <Switch id="email-alerts" />
+              <FormLabel htmlFor="email-alerts" mb="0">
+                Donate less than 5 USD owed from friends
+              </FormLabel>
+            </FormControl>
+          </Box>
           <Heading p="2" color="#285E61">
             Transactions
           </Heading>
