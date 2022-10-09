@@ -8,6 +8,7 @@ import {
 import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
+import { generateName } from '../Utils/name.js';
 import { createAztecSdk, EthersAdapter, SdkFlavour } from '@aztec/sdk';
 import { EthAddress, GrumpkinAddress } from '@aztec/barretenberg/address';
 import { useRouter } from 'next/router';
@@ -42,6 +43,7 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
 
   const setStoreWallet = useStore((store: any) => store.setStoreWallet);
+  const setStoreRandoName = useStore((store: any) => store.setStoreRandoName);
   const setStoreWeb3Auth = useStore((store: any) => store.setStoreWeb3Auth);
   const setStoreProvider = useStore((store: any) => store.setStoreProvider);
   const setStoreAztecAccount = useStore(
@@ -108,6 +110,7 @@ function App() {
         console.log('here is the sdk', sdk);
 
         const userAddress = await getAccounts();
+        setStoreWallet(userAddress);
 
         console.log('here is the userAddress', userAddress);
 
@@ -124,14 +127,32 @@ function App() {
         console.log('here is the aztecAccount', aztecAccount);
 
         let account = await sdk.getUser(publicKey);
+        let randoName = false;
 
         if (account.id === null) {
+          const randoName = generateName();
           account = await sdk.addUser(privateKey);
+          // sdk.createRegisterController(
+          //   account.id,
+          //   randoName,
+          //   privateKey,
+          //   account.id,
+          //   userAddress,
+          //   0,
+          //   0,
+          //   userAddress,
+          //   provider
+          // );
         }
 
         console.log('Aztec account', account);
 
         await setStoreAztecAccount({ GrumpkinAddress: account.id });
+
+        // set random name for a new user
+        if (randoName) {
+          await setStoreRandoName({ randoName: randoName });
+        }
 
         await account.awaitSynchronised();
         console.log(' setStoreProvider ', setStoreProvider);
@@ -182,7 +203,9 @@ function App() {
 
   useEffect(() => {
     if (storeAztecAccount?.GrumpkinAddress) {
-      router.push(`/user/`);
+      //@ts-ignore
+      setStoreWallet(provider?.selectedAddress);
+      router.push(`/home/`);
     }
   }, [storeAztecAccount]);
 

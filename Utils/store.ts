@@ -1,6 +1,7 @@
 // store/store.js
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Web3Storage } from 'web3.storage';
 // create store
 const useStore = create(
   persist(
@@ -13,6 +14,8 @@ const useStore = create(
       storeAztecAccount: null,
       storeWeb3auth: null,
       storeProvider: null,
+      w3name: null,
+      storeRandoName: null,
 
       //State methods
       // setWallet: (userWallet) => {
@@ -38,6 +41,25 @@ const useStore = create(
       setWorldcoinModal: (bool) => {
         set({ worldcoinModal: bool });
       },
+      setStoreRandoName: (name: string) => {
+        set({ storeRandoName: name });
+      },
+
+      storageClient: async () => {
+        console.log('here is the apikey', process.env.WEB3_STORAGE_API_KEY);
+        try {
+          const storageClient = await new Web3Storage({
+            token: process.env.WEB3_STORAGE_API_KEY,
+          });
+          return storageClient;
+        } catch (err) {
+          return err;
+        }
+      },
+
+      // checkW3Name: async () => {
+
+      // },
 
       //examples
 
@@ -54,6 +76,8 @@ const useStore = create(
       name: 'zenmo-storage', // unique name
       partialize: (state: any) => ({
         storeAztecAccount: state.storeAztecAccount,
+        storeRandoName: state.storeRandoName,
+        storeWallet: state.storeWallet,
       }),
       // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
       // serialize: (state) => btoa(JSON.stringify(state)),

@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Web3Storage } from 'web3.storage';
 
 import useStore from '../Utils/store';
 
@@ -26,11 +25,8 @@ const User = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [creatingGroup, setCreatingGroup] = useState(false);
 
-  const { wallet, aztecAccount } = useStore((state: any) => state);
-
-  console.log('here is the store', wallet, aztecAccount);
-
-  useEffect(() => {}, [wallet]);
+  const storeAztecAccount = useStore((state: any) => state.storeAztecAccount);
+  const storeRandoName = useStore((state: any) => state.storeRandoName);
 
   //create Group
   const createGroup = async (id) => {
