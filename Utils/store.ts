@@ -35,13 +35,16 @@ const useStore = create(
       //   const response = await fetch(pond)
       //   set({ fishies: await response.json() })
       // },
-    })
-    // {
-    //   name: 'zenmo-storage', // unique name
-    //   // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
-    //   serialize: (state) => btoa(JSON.stringify(state)),
-    //   deserialize: (str) => JSON.parse(atob(str)),
-    // }
+    }),
+    {
+      name: 'zenmo-storage', // unique name
+      partialize: (state: any) => ({
+        storeAztecAccount: state.storeAztecAccount,
+      }),
+      // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
+      // serialize: (state) => btoa(JSON.stringify(state)),
+      // deserialize: (str) => JSON.parse(atob(str)),
+    }
   )
 );
 export default useStore;
