@@ -1,9 +1,9 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background: #0BAB9E;
+    
 }
 
 a {
@@ -13,11 +13,12 @@ a {
 
 * {
   box-sizing: border-box;
+
 }
 
+
+
 .container {
-  width: 60%;
-  margin: auto;
   padding: 0 2rem;
 }
 
@@ -29,24 +30,29 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
 }
 
 .title {
   line-height: 1.15;
   font-size: 3rem;
   text-align: center;
-  margin: 50px;
+  margin-top: 200px;
+
+  
 }
 
 .title a {
   color: #0070f3;
   text-decoration: none;
+  margin-top: "100px";
 }
 
 .grid {
   display: flex;
   align-items: center;
   flex-direction: column;
+  
 }
 
 .card {
@@ -60,6 +66,7 @@ a {
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   width: 100%;
+  
 }
 
 .card:hover,
