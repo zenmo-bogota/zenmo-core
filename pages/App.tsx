@@ -10,6 +10,7 @@ import RPC from '../components/web3RPC'; // for using web3.js
 import useStore from '../Utils/store';
 import { createAztecSdk, EthersAdapter, SdkFlavour } from '@aztec/sdk';
 import { EthAddress, GrumpkinAddress } from '@aztec/barretenberg/address';
+import { useRouter } from 'next/router';
 
 import {
   Box,
@@ -33,18 +34,20 @@ const clientId =
   'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
 
 function App() {
+  const router = useRouter();
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
   const [openModal, setOpenModal] = useState(false);
 
-  const {
-    setStoreWallet,
-    setStoreWeb3Auth,
-    setStoreProvider,
-    storeAztecAccount,
-  } = useStore((store: any) => store);
+  const setStoreWallet = useStore((store: any) => store.setStoreWallet);
+  const setStoreWeb3Auth = useStore((store: any) => store.setStoreWeb3Auth);
+  const setStoreProvider = useStore((store: any) => store.setStoreProvider);
+  const setStoreAztecAccount = useStore(
+    (store: any) => store.setStoreAztecAccount
+  );
+  const storeAztecAccount = useStore((store: any) => store.storeAztecAccount);
 
   const setupAztec = async () => {
     console.log('setupAztec running');
@@ -77,14 +80,6 @@ function App() {
         setStoreProvider &&
         storeAztecAccount === null
       ) {
-        // setStoreProvider(web3auth.provider);
-        // setStoreWallet(provider);
-
-        // const signer = provider.getSigner();
-        // const userAddress = await signer.getAddress();
-
-        // console.log('here is the address', userAddress);
-        // const ethereumProvider = new EthersAdapter(provider);
         if (
           //@ts-ignore
           window.ethereum.chainId !== '0xa57ec' ||
@@ -126,18 +121,21 @@ function App() {
           sdk,
         };
 
-        const account = await sdk.addUser(privateKey);
-
-        await storeAztecAccount(account);
-
-        await account.awaitSynchronised();
-
         console.log('here is the aztecAccount', aztecAccount);
 
-        console.log('web3auth.provider', web3auth?.provider);
-        console.log('provider', provider);
+        let account = await sdk.getUser(publicKey);
+
+        if (account.id === null) {
+          account = await sdk.addUser(privateKey);
+        }
+
+        console.log('Aztec account', account);
+
+        await setStoreAztecAccount({ GrumpkinAddress: account.id });
+
+        await account.awaitSynchronised();
         console.log(' setStoreProvider ', setStoreProvider);
-        console.log(' storeAztecAccount', storeAztecAccount);
+        console.log(' storeAztecAccount', setStoreAztecAccount);
       }
     } catch (err) {
       console.log(err);
@@ -183,9 +181,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // setupAztec();
-    // setStoreWeb3Auth(web3auth);
-  }, [provider, setStoreProvider]);
+    if (storeAztecAccount.GrumpkinAddress) {
+      router.push(`/user/`);
+    }
+  }, [storeAztecAccount]);
 
   const login = async () => {
     if (!web3auth) {

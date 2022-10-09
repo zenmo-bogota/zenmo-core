@@ -52,9 +52,12 @@ const useStore = create(
     }),
     {
       name: 'zenmo-storage', // unique name
+      partialize: (state: any) => ({
+        storeAztecAccount: state.storeAztecAccount,
+      }),
       // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
-      //serialize: (state) => btoa(JSON.stringify(state)),
-      //deserialize: (str) => JSON.parse(atob(str)),
+      // serialize: (state) => btoa(JSON.stringify(state)),
+      // deserialize: (str) => JSON.parse(atob(str)),
     }
   )
 );
