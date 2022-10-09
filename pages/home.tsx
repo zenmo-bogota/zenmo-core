@@ -15,6 +15,9 @@ import {
   SkeletonCircle,
   SkeletonText,
   Center,
+  FormControl,
+  Switch,
+  FormLabel,
 } from '@chakra-ui/react';
 import Davatar from '@davatar/react';
 import { rand } from 'elliptic';
@@ -28,7 +31,6 @@ import { Web3Storage } from 'web3.storage';
 import { create } from 'ipfs-core';
 import RPC from '../components/web3RPC'; // for using web3.js
 import { ethers } from 'ethers';
-import { FormControl, Switch, FormLabel } from '@chakra-ui/react';
 
 //mock data
 const user = [
