@@ -6,11 +6,23 @@ const useStore = create(
   persist(
     (set, get) => ({
       // State Variables
-      wallet: null,
+      storeWallet: null,
+      storeAztecAccount: null,
+      storeWeb3auth: null,
+      storeProvider: null,
 
       //State methods
-      setWallet: (userWallet) => {
-        set({ wallet: userWallet });
+      setStoreWallet: (userWallet) => {
+        set({ storeWallet: userWallet });
+      },
+      setStoreAztecAccount: async (account) => {
+        set({ storeAztecAccount: account });
+      },
+      setStoreWeb3auth: (auth) => {
+        set({ storeWeb3auth: auth });
+      },
+      setStoreProvider: (provider) => {
+        set({ storeProvider: provider });
       },
 
       //examples
@@ -23,13 +35,13 @@ const useStore = create(
       //   const response = await fetch(pond)
       //   set({ fishies: await response.json() })
       // },
-    }),
-    {
-      name: 'zenmo-storage', // unique name
-      // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
-      serialize: (state) => btoa(JSON.stringify(state)),
-      deserialize: (str) => JSON.parse(atob(str)),
-    }
+    })
+    // {
+    //   name: 'zenmo-storage', // unique name
+    //   // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
+    //   serialize: (state) => btoa(JSON.stringify(state)),
+    //   deserialize: (str) => JSON.parse(atob(str)),
+    // }
   )
 );
 export default useStore;
