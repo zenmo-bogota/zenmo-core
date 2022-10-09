@@ -181,7 +181,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (storeAztecAccount.GrumpkinAddress) {
+    if (storeAztecAccount?.GrumpkinAddress) {
       router.push(`/user/`);
     }
   }, [storeAztecAccount]);

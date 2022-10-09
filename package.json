@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
+    "@aztec/bridge-clients": "0.1.63",
     "@aztec/barretenberg": "^2.1.45",
     "@aztec": "^2.1.45",
     "@aztec/sdk": "^2.1.45",
-    "@aztec/bridge-clients": "0.1.63",
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
