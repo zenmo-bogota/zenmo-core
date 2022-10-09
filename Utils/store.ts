@@ -7,11 +7,20 @@ const useStore = create(
     (set, get) => ({
       // State Variables
       wallet: null,
+      worldcoinHash: "",
+      worldcoinModal: false,
 
       //State methods
-      setWallet: (userWallet) => {
-        set({ wallet: userWallet });
+      // setWallet: (userWallet) => {
+      //   set({ wallet: userWallet });
+      // },
+      setWorldcoinHash: (hash) => {
+        set({ worldcoinHash: hash, worldcoinModal: false})
       },
+      setWorldcoinModal: (bool) => {
+        set({ worldcoinModal: bool})
+      }
+
 
       //examples
 
@@ -27,8 +36,8 @@ const useStore = create(
     {
       name: 'zenmo-storage', // unique name
       // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
-      serialize: (state) => btoa(JSON.stringify(state)),
-      deserialize: (str) => JSON.parse(atob(str)),
+      //serialize: (state) => btoa(JSON.stringify(state)),
+      //deserialize: (str) => JSON.parse(atob(str)),
     }
   )
 );
