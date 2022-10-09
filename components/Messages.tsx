@@ -4,7 +4,8 @@ import { Avatar, Flex, Text } from '@chakra-ui/react';
 const Messages = ({ messages }) => {
   const AlwaysScrollToBottom = () => {
     const elementRef = useRef();
-    useEffect(() => elementRef.current.scrollIntoView());
+    //@ts-ignore
+    useEffect(() => elementRef?.current?.scrollIntoView());
     return <div ref={elementRef} />;
   };
 
