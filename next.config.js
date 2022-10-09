@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+module.exports = {
   reactStrictMode: true,
   swcMinify: true,
   webpack5: true,
@@ -9,5 +10,3 @@ const nextConfig = {
     return config;
   },
 };
-
-module.exports = nextConfig;
