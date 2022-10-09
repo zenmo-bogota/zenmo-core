@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { AddIcon, BellIcon } from '@chakra-ui/icons';
 import {
   Avatar,
@@ -14,7 +15,7 @@ import {
 const Layout = ({ children }) => {
   return (
     <>
-      <Flex>
+      <Flex bg="#0BAB9E">
         <Grid
           bg="#0BAB9E"
           w="100%"
@@ -34,15 +35,25 @@ const Layout = ({ children }) => {
       <Container>
         <Box bg="white" w="100%" p={4}>
           <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-            <Flex w="100%">
-              <Image boxSize="150px" src="/home.svg" alignContent="center" />
-            </Flex>
-            <Flex w="100%">
-              <Image boxSize="150px" src="/pay.svg" alignContent="center" />
-            </Flex>
-            <Flex w="100%">
-              <Image boxSize="150px" src="/circles.svg" alignContent="center" />
-            </Flex>
+            <Link href="home">
+              <Flex w="100%">
+                <Image boxSize="150px" src="/home.svg" alignContent="center" />
+              </Flex>
+            </Link>
+            <Link href="/pay">
+              <Flex w="100%">
+                <Image boxSize="150px" src="/pay.svg" alignContent="center" />
+              </Flex>
+            </Link>
+            <Link href="/mygroups/123">
+              <Flex w="100%">
+                <Image
+                  boxSize="150px"
+                  src="/circles.svg"
+                  alignContent="center"
+                />
+              </Flex>
+            </Link>
           </Grid>
         </Box>
       </Container>
