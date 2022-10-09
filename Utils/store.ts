@@ -21,8 +21,8 @@ const useStore = create(
       // setWallet: (userWallet) => {
       //   set({ wallet: userWallet });
       // },
-      setWorldcoinHash: (hash) => {
-        set({ worldcoinHash: hash, worldcoinModal: false });
+      setWorldcoinHash: async (hash) => {
+        set({ worldcoinHash: hash });
       },
 
       //State methods
@@ -43,6 +43,9 @@ const useStore = create(
       },
       setStoreRandoName: (name: string) => {
         set({ storeRandoName: name });
+      },
+      setHash: async (hash) => {
+        set({ worldcoinHash: hash });
       },
 
       storageClient: async () => {
@@ -78,6 +81,7 @@ const useStore = create(
         storeAztecAccount: state.storeAztecAccount,
         storeRandoName: state.storeRandoName,
         storeWallet: state.storeWallet,
+        worldcoinHash: state.worldcoinHash,
       }),
       // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
       // serialize: (state) => btoa(JSON.stringify(state)),
