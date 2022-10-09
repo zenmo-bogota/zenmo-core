@@ -6,10 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "copy:sdk-resources": "cp ./node_modules/@aztec/barretenberg/wasm/barretenberg.wasm ./public/ && cp ./node_modules/@aztec/barretenberg/worker.js ./public/"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
+    "@aztec/bridge-clients": "0.1.63",
+    "@aztec/sdk": "^2.1.45",
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
@@ -21,9 +24,11 @@
     "@worldcoin/id": "^0.9.2",
     "ethers": "^5.6.9",
     "framer-motion": "^6",
+    "ipfs-core": "^0.16.1",
     "next": "^12.3.1",
     "react": "18",
     "react-dom": "18",
+    "w3name": "^1.0.6",
     "styled-components": "^5.3.6",
     "web3": "^1.7.0",
     "web3.storage": "^4.4.0",

@@ -8,6 +8,10 @@ import {
 import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
+import { generateName } from '../Utils/name.js';
+import { createAztecSdk, EthersAdapter, SdkFlavour } from '@aztec/sdk';
+import { EthAddress, GrumpkinAddress } from '@aztec/barretenberg/address';
+import { useRouter } from 'next/router';
 
 import {
   Box,
@@ -31,13 +35,134 @@ const clientId =
   'BOEGk24qBxVg9qe0z7wr_Wa5gaec_tOzUCuqnDr6z1Yp0IEtqIvgNt7gDfcZnoCRVn94jGMcGx5ZGUQQRALOMag'; // get from https://dashboard.web3auth.io
 
 function App() {
+  const Router = useRouter();
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
 
-  const setWallet = useStore((store: any) => store.setWallet);
+  const setStoreWallet = useStore((store: any) => store.setStoreWallet);
+  const setStoreRandoName = useStore((store: any) => store.setStoreRandoName);
+  const setStoreWeb3Auth = useStore((store: any) => store.setStoreWeb3Auth);
+  const setStoreProvider = useStore((store: any) => store.setStoreProvider);
+  const setStoreAztecAccount = useStore(
+    (store: any) => store.setStoreAztecAccount
+  );
+  const storeAztecAccount = useStore((store: any) => store.storeAztecAccount);
+
+  const setupAztec = async () => {
+    console.log('setupAztec running');
+    //@ts-ignore
+    if (!window.ethereum) {
+      alert('no window.ethereum?');
+      return;
+    }
+
+    let networkData = [
+      {
+        chainId: '0xa57ec',
+
+        chainName: 'Aztec Testnet',
+
+        rpcUrls: ['https://aztec-connect-testnet-eth-host.aztec.network:8545'],
+
+        nativeCurrency: {
+          name: 'Ether',
+
+          symbol: 'ETH',
+
+          decimals: 18,
+        },
+      },
+    ];
+    try {
+      if (
+        web3auth?.provider &&
+        setStoreProvider &&
+        storeAztecAccount === null
+      ) {
+        if (
+          //@ts-ignore
+          window.ethereum.chainId !== '0xa57ec' ||
+          //@ts-ignore
+          window.ethereum.chainId !== '0x677868'
+        ) {
+          //@ts-ignore
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+
+            params: networkData,
+          });
+        }
+
+        console.log('---- begin SDK ----');
+
+        const sdk = await createAztecSdk(provider, {
+          serverUrl: 'https://api.aztec.network/aztec-connect-testnet/falafel', // testnet
+          pollInterval: 1000,
+          memoryDb: true, // set to false to save chain data
+          debug: 'bb:*', // print debug logs
+          flavour: SdkFlavour.PLAIN, // Use PLAIN with Nodejs
+          minConfirmation: 1, // ETH block confirmations
+        });
+
+        console.log('here is the sdk', sdk);
+
+        const userAddress = await getAccounts();
+        setStoreWallet(userAddress);
+        provider;
+
+        console.log('here is the userAddress', userAddress);
+
+        const { publicKey, privateKey } = await sdk.generateAccountKeyPair(
+          userAddress as EthAddress
+        );
+
+        const aztecAccount = {
+          publicKey,
+          privateKey,
+          sdk,
+        };
+
+        console.log('here is the aztecAccount', aztecAccount);
+
+        let account = await sdk.getUser(publicKey);
+        let randoName = false;
+
+        if (account.id === null) {
+          const randoName = generateName();
+          account = await sdk.addUser(privateKey);
+          // sdk.createRegisterController(
+          //   account.id,
+          //   randoName,
+          //   privateKey,
+          //   account.id,
+          //   userAddress,
+          //   0,
+          //   0,
+          //   userAddress,
+          //   provider
+          // );
+        }
+
+        console.log('Aztec account', account);
+
+        await setStoreAztecAccount({ GrumpkinAddress: account.id });
+
+        // set random name for a new user
+        if (randoName) {
+          await setStoreRandoName({ randoName: randoName });
+        }
+
+        await account.awaitSynchronised();
+        console.log(' setStoreProvider ', setStoreProvider);
+        console.log(' storeAztecAccount', setStoreAztecAccount);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     const init = async () => {
@@ -67,6 +192,7 @@ function App() {
         });
         if (web3auth.provider) {
           setProvider(web3auth.provider);
+          setStoreProvider(web3auth.provider);
         }
       } catch (error) {
         console.error(error);
@@ -76,13 +202,20 @@ function App() {
     init();
   }, []);
 
+  useEffect(() => {
+    if (storeAztecAccount?.GrumpkinAddress) {
+      //@ts-ignore
+      setStoreWallet(provider?.selectedAddress);
+      router.push(`/home/`);
+    }
+  }, [storeAztecAccount]);
+
   const login = async () => {
     if (!web3auth) {
       console.log('web3auth not initialized yet');
       return;
     }
     const web3authProvider = await web3auth.connect();
-    //setWallet(web3authProvider);
     setProvider(web3authProvider);
   };
 
@@ -121,6 +254,7 @@ function App() {
     const rpc = new RPC(provider);
     const address = await rpc.getAccounts();
     console.log(address);
+    return address;
   };
 
   const getBalance = async () => {
@@ -164,6 +298,7 @@ function App() {
   };
   const loggedInView = (
     <>
+      {Router.push('/home')}
       <Worldcoin />
     </>
   );
@@ -193,12 +328,16 @@ function App() {
   //       Log Out
   //     </button>
 
-      <div id="console" style={{ whiteSpace: 'pre-line' }}>
-        <p style={{ whiteSpace: 'pre-line' }}></p>
-      </div>
+  //   <button onClick={() => setupAztec()} className="card">
+  //   setupAztec
+  // </button>
+
+  <div id="console" style={{ whiteSpace: 'pre-line' }}>
+    <p style={{ whiteSpace: 'pre-line' }}></p>
+  </div>;
 
   const unloggedInView = (
-      <div className="container" style={{ background: '#0BAB9E', width: '100%'  }}>
+    <div className="container" style={{ background: '#0BAB9E', width: '100%' }}>
       <img
         src="/Zenmo brand M.svg"
         alt=""
@@ -207,38 +346,37 @@ function App() {
           marginRight: 'auto',
           width: '50%',
         }}
-      >
-      </img>
+      ></img>
       <Center>
         <Button
-        style={{
-          colorScheme: 'white',
-          width: '150px',
-          height: '70px',
-          color: 'black',
-          border: 'black',
-        }}
-        onClick={login}
-      >
-        Login
-      </Button>
+          style={{
+            colorScheme: 'white',
+            width: '150px',
+            height: '70px',
+            color: 'black',
+            border: 'black',
+          }}
+          onClick={login}
+        >
+          Login
+        </Button>
       </Center>
       <footer className="footer" style={{ color: 'blue' }}>
-          <a
-            href="https://github.com/zenmo-bogota/zenmo-core"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Source code
-          </a>
-        </footer>
+        <a
+          href="https://github.com/zenmo-bogota/zenmo-core"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source code
+        </a>
+      </footer>
     </div>
   );
   // <div className="grid">{provider ? loggedInView : unloggedInView}</div>;
 
   return (
     <>
-        <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
     </>
   );
 
