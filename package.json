@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn copy:sdk-resources && next build",
     "start": "next start",
     "lint": "next lint",
     "copy:sdk-resources": "cp ./node_modules/@aztec/barretenberg/wasm/barretenberg.wasm ./public/ && cp ./node_modules/@aztec/barretenberg/worker.js ./public/"
