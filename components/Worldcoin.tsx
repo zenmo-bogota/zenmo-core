@@ -1,13 +1,17 @@
 import { WorldIDWidget } from "@worldcoin/id";
+import useStore from '../Utils/store';
 
 const Verify = () => {
   // get user from global state
+  const setWorldcoinHash = useStore(
+    (store: any) => store.worldcoin_hash
+  );
 
   const completeVerification = async (verificationResponse) => {
     console.log(verificationResponse);
 
     // Append User with worldcoin hash
-    // worldcoin_hash: verificationResponse.nullifier_hash,
+    setWorldcoinHash(verificationResponse.nullifier_hash)
 
   };
 
@@ -16,10 +20,9 @@ const Verify = () => {
       <div className="container">
 
         <div className="flex flex-col gap-3 mb-16 mt-[6.5rem] ">
-          <p className="text-3xl">Verify that you're human</p>
+          <p className="text-3xl">Verify your proof of humanhood</p>
           <p>
-            To avoid spam and fake accounts we integrate with Worldcoin to
-            verify that you are a human being.
+            To avoid bots and spam, zenmo partners with worldcoin to help verify real humanhood through biometrics!
           </p>
         </div>
 
@@ -35,7 +38,7 @@ const Verify = () => {
             onError={(error) => console.error(error)}
           />
           <div className="mt-12">
-            I don't have a Worldcoin account
+            I don't have Worldcoin
           </div>
         </div>
       </div>
