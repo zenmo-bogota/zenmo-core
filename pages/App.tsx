@@ -8,6 +8,7 @@ import {
 import RPC from '../components/web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 import useStore from '../Utils/store';
+
 import {
   Box,
   Button,
@@ -20,6 +21,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+
+import Worldcoin from '../components/Worldcoin';
+
 <Link>Chakra UI</Link>;
 
 const clientId =
@@ -206,6 +210,7 @@ function App() {
   // <div className="grid">{provider ? loggedInView : unloggedInView}</div>;
 
   return (
+  
     <div
       className="container"
       style={{ background: '#0BAB9E', width: '100% ' }}
@@ -219,6 +224,14 @@ function App() {
           width: '50%',
         }}
       ></img>
+    <div className="container">
+      <h1 className="title">
+        <Link target="_blank" href="http://web3auth.io/" rel="noreferrer">
+          Web3Auth
+        </Link>
+        & ReactJS Example
+      </h1>
+      <Worldcoin />
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
