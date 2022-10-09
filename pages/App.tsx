@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Web3Auth } from '@web3auth/web3auth';
 import {
   CHAIN_NAMESPACES,
@@ -185,9 +186,9 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        <Link target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
-        </a>
+        </Link>
         & ReactJS Example
       </h1>
 
