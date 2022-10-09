@@ -1,7 +1,7 @@
 import { WorldIDWidget } from "@worldcoin/id";
 import useStore from '../Utils/store';
 
-const Verify = () => {
+const Worldcoin = () => {
   // get user from global state
   const setWorldcoinHash = useStore(
     (store: any) => store.worldcoin_hash
@@ -27,7 +27,7 @@ const Verify = () => {
         </div>
 
         <div className="flex flex-col items-center">
-          <WorldIDWidget
+            {(typeof window !== "undefined") && <WorldIDWidget
             actionId="wid_5e992e67b57992e677dcfa6159909e3d"
             signal="zenmo"
             // signal={account}
@@ -36,9 +36,9 @@ const Verify = () => {
               completeVerification(verificationResponse)
             } 
             onError={(error) => console.error(error)}
-          />
+          /> }
           <div className="mt-12">
-            I don't have Worldcoin
+            I do not have Worldcoin
           </div>
         </div>
       </div>
@@ -46,4 +46,4 @@ const Verify = () => {
   );
 };
 
-export default Verify;
+export default Worldcoin;
